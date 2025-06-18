@@ -4,6 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     const contentDiv = document.getElementById('content');
 
+    // API configuration
+    const API_BASE_URL = window.location.protocol === 'https:' 
+        ? 'https://83.136.210.142:8000'  // for HTTPS
+        : 'http://83.136.210.142:8000';  // for HTTP
+
     // Check if we have a valid token
     const token = localStorage.getItem('auth_token');
     if (!token) {
@@ -20,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = document.getElementById('password').value;
         
         try {
-            const response = await fetch('http://83.136.210.142:8000/auth', {
+            const response = await fetch(`${API_BASE_URL}/auth`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             showStatus('Login failed: ' + error.message, 'error');
+            console.error('Login error:', error);
         }
     });
 
@@ -57,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Call your Flask backend
-            const response = await fetch('http://83.136.210.142:8000/follow', {
+            const response = await fetch(`${API_BASE_URL}/follow`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
